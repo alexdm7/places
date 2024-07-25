@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:places/screens/add_place.dart';
 import 'package:places/widgets/places_list.dart';
 import 'package:places/providers/user_places.dart';
@@ -13,11 +12,11 @@ class PlacesScreen extends ConsumerStatefulWidget {
   }
 }
  class _PlacesScreenState extends ConsumerState<PlacesScreen>{
-  late Future<void>_placesFuter;
+  late Future<void>_placesFuture;
   @override
   void initState() {
     super.initState();
-    _placesFuter=ref.read(userPlacesProvider.notifier).loadedPlaces();
+    _placesFuture=ref.read(userPlacesProvider.notifier).loadedPlaces();
   }
   @override
   Widget build(BuildContext context ) {
@@ -41,7 +40,7 @@ class PlacesScreen extends ConsumerStatefulWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child:FutureBuilder(future: _placesFuter,builder:(context, snapshot) => snapshot.connectionState ==
+        child:FutureBuilder(future: _placesFuture,builder:(context, snapshot) => snapshot.connectionState ==
           ConnectionState.waiting ? const Center(child: CircularProgressIndicator(),):PlacesList(
           places: userPlaces,
         ),),

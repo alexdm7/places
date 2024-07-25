@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:location/location.dart';
 import 'package:places/models/place.dart';
-import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:places/widgets/image_input.dart';
 import 'package:places/providers/user_places.dart';
@@ -23,7 +19,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
   File? _selctedImage;
   PlaceLocation? _selecteLocation;
-
+//create save method
   void _savePlace() {
     final enteredTitle = _titleController.text;
 
@@ -35,16 +31,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
     ref
         .read(userPlacesProvider.notifier)
         .addPlace(enteredTitle, _selctedImage!,_selecteLocation!);
-   //  final url=Uri.https('places-b02a0-default-rtdb.firebaseio.com','places_list.json');
-   //  http.post(url,headers: {
-   //    'Content-Type':'application/json'
-   //  },body: json.encode({
-   //    'title':enteredTitle,
-   // //  'image':_selctedImage,
-   //    'address':_selecteLocation?.address,
-   //    'longitude':_selecteLocation?.longitude,
-   //    'latitude':_selecteLocation?.latitude,
-   //  }));
+
 
     Navigator.of(context).pop();
 
@@ -70,7 +57,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
               decoration: const InputDecoration(labelText: 'Title'),
               controller: _titleController,
               style: TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 10),

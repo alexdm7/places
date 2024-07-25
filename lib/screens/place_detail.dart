@@ -7,6 +7,7 @@ class PlaceDetailScreen extends StatelessWidget {
   const PlaceDetailScreen({super.key, required this.place});
 
   final Place place;
+  //get location method
   String get locationImage{
 
     final lat=place.location.latitude;
@@ -36,7 +37,7 @@ class PlaceDetailScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: (){
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (ctx) => MapScreen(location: place.location,isSelcted: false,),)
+                        MaterialPageRoute(builder: (ctx) => MapScreen(location: place.location,isSelected: false,),)
                       );
                     },
                     child: CircleAvatar(radius: 70,
@@ -60,7 +61,7 @@ class PlaceDetailScreen extends StatelessWidget {
                       child: Text(place.location.address,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),),),
 
                 ],))

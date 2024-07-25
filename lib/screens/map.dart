@@ -1,58 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:places/models/place.dart';
 
-class MapScreen extends StatefulWidget{
-  const MapScreen({super.key,
-  this.location=const PlaceLocation(latitude: 23.6134868, longitude: 58.5414574, address: ''),
-  this.isSelcted=true});
+class MapScreen extends StatefulWidget {
+  const MapScreen({
+    super.key,
+    this.location = const PlaceLocation(
+        latitude: 23.6134868, longitude: 58.5414574, address: ''),
+    this.isSelected = true,
+  });
   final PlaceLocation location;
-  final bool isSelcted;
+  final bool isSelected;
+
   @override
-  State<MapScreen> createState() {
-     return _MapScreenState();
-  }
+  State<MapScreen> createState() => _MapScreenState();
 }
-class _MapScreenState extends State<MapScreen>{
-  LatLng? _pickedLoction;
+
+class _MapScreenState extends State<MapScreen> {
+  LatLng? _pickedLocation;
+
   @override
   Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text(widget.isSelcted?'pick location':'yor location'),
-      actions: [
-        if(widget.isSelcted)
-          IconButton(onPressed: (){
-            Navigator.of(context).pop(_pickedLoction);
-          }, icon: Icon(Icons.save)),
-      ],
-
-    ),
-    body: GoogleMap(
-      onTap:!widget.isSelcted  ? null: (postion){
-      setState(() {
-        _pickedLoction=postion;
-      });
-
-      },
-      initialCameraPosition: CameraPosition(
-        target: LatLng(widget.location.latitude, widget.location.longitude),
-        zoom: 13,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.isSelected ? 'Pick Location' : 'Your Location'),
+        actions: [
+          if (widget.isSelected)
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pop(_pickedLocation);
+              },
+              icon: const Icon(Icons.save),
+            ),
+        ],
       ),
-      markers:(_pickedLoction == null&& widget.isSelcted) ? {} : {
-        Marker(
-            markerId: MarkerId('m1'),
-        position:_pickedLoction ?? LatLng(
-            widget.location.latitude,
-            widget.location.longitude),
+      body: GoogleMap(
+        onLongPress: !widget.isSelected
+            ? null
+            : (position) {
+          setState(() {
+            _pickedLocation = position;
+          });
+        },
+        initialCameraPosition: CameraPosition(
+          target: LatLng(widget.location.latitude, widget.location.longitude),
+          zoom: 13,
         ),
-
-
-      },
-
-    ),
-
-  );
+        markers: _pickedLocation == null && widget.isSelected
+            ? {}
+            : {
+          Marker(
+            markerId: const MarkerId('m1'),
+            position: _pickedLocation ??
+                LatLng(
+                  widget.location.latitude,
+                  widget.location.longitude,
+                ),
+          ),
+        },
+      ),
+    );
   }
 }

@@ -28,6 +28,7 @@ class _LocationInputState extends State<LocationInput> {
     final lng=_pickedLocation!.longitude;
     return 'https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng=&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=AIzaSyBmp4UPrqAOf_4WP2-SeQLkyqEWQnBnEqg';
   }
+  //create save location method
   void _savePlace(double latitude,double longitude)async{
     final url=Uri.parse(
         'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyBmp4UPrqAOf_4WP2-SeQLkyqEWQnBnEqg');
@@ -71,8 +72,7 @@ class _LocationInputState extends State<LocationInput> {
     });
 
     locationData = await location.getLocation();
-    print(locationData.latitude);
-    print(locationData.longitude);
+
     final lat=locationData.latitude;
     final lng=locationData.longitude;
     if(lat == null || lng == null){
@@ -80,9 +80,10 @@ class _LocationInputState extends State<LocationInput> {
     }
   _savePlace(lat, lng);
   }
-  void _selecteOnMap()async{
+  //create select map method
+  void _selectOnMap()async{
    final pickedLocation=await Navigator.of(context).push<LatLng>(
-      MaterialPageRoute(builder: (ctx) => MapScreen(),)
+      MaterialPageRoute(builder: (ctx) => const MapScreen(),)
     );
    if(pickedLocation==null){
      return;
@@ -98,7 +99,7 @@ class _LocationInputState extends State<LocationInput> {
       style: Theme.of(context)
           .textTheme
           .bodyLarge!
-          .copyWith(color: Theme.of(context).colorScheme.onBackground),
+          .copyWith(color: Theme.of(context).colorScheme.onSurface),
     );
     if(_pickedLocation != null){
       priveiwContent=Image.network(
@@ -129,13 +130,13 @@ class _LocationInputState extends State<LocationInput> {
           children: [
             TextButton.icon(
               onPressed: _getCrrentLocation,
-              icon: Icon(Icons.location_on),
-              label: Text('get crrunt location'),
+              icon: const Icon(Icons.location_on),
+              label:const Text('get crrunt location'),
             ),
             TextButton.icon(
-              onPressed: _selecteOnMap,
-              icon: Icon(Icons.map),
-              label: Text('get  map'),
+              onPressed: _selectOnMap,
+              icon:const Icon(Icons.map),
+              label:const Text('get  map'),
             ),
           ],
         )

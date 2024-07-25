@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart' as syspaths;
 import 'dart:io';
@@ -7,11 +7,13 @@ import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart' as path;
 import 'package:places/models/place.dart';
 
+//create Database method
 Future<Database> _getDatabase() async{
+  var tableName='user_places';
   final dbPath=await sql.getDatabasesPath();
   final db= await sql.openDatabase(path.join(dbPath,'places.db'),onCreate: (db, version) {
     return db.execute(
-        'CREATE TABLE user_places(id TEXT PRIMARY KEY,title TEXT,image TEXT,lat REAL,lng REAL,address TEXT)');
+        'CREATE TABLE $tableName(id TEXT PRIMARY KEY,title TEXT,image TEXT,lat REAL,lng REAL,address TEXT)');
   },
     version: 1,
   );
@@ -20,7 +22,7 @@ Future<Database> _getDatabase() async{
 }
 class UserPlacesNotifier extends StateNotifier<List<Place>> {
   UserPlacesNotifier() : super(const []);
-
+//create loadedPlaces method
 Future <void> loadedPlaces()async{
   final db=await _getDatabase();
  final data=await db.query('user_places');
@@ -37,7 +39,7 @@ Future <void> loadedPlaces()async{
   ) ,).toList();
  state=places;
 }
-
+//create insert method
   void addPlace(String title, File image,PlaceLocation location)async {
     final appDir=await syspaths.getApplicationDocumentsDirectory();
     final fileName= path.basename(image.path);
@@ -54,9 +56,12 @@ Future <void> loadedPlaces()async{
       'address':newPlace.location.address,
 
     });
+
     state = [newPlace, ...state];
   }
 }
+
+
 
 final userPlacesProvider =
     StateNotifierProvider<UserPlacesNotifier, List<Place>>(
